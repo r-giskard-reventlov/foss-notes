@@ -1,0 +1,64 @@
+html,body {
+  height: 100%;
+}
+
+.categories {
+
+}
+
+.notes {
+  overflow-y: scroll;
+}
+
+
+
+#btn-add-note svg {
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+
+#btn-recent-note svg, #btn-liked-note svg, #btn-list-note svg {
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+}
+
+.list-group-item {
+  border-radius: 0rem !important;
+  padding: 0.25rem !important;
+}
+
+.card {
+  border-radius: 0rem !important;
+  padding: 0.25rem !important;
+}
+
+#note-list li {
+  cursor: pointer;
+}
+
+.selected-note {
+  background: red;
+}
+
+input {
+  border: 0;
+  box-shadow: 0;
+}
+
+button {
+  border-radius: 0rem !important;
+}
+
+hr {
+  margin-top: 0.4rem;
+  margin-bottom: 0.6rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.no-border {
+    border: 0;
+    box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+}

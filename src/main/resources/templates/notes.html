@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <title>FOSS Notes</title>
+    <meta name="description" content="Sample app demonstrating resource UMA">
+    <meta name="author" content="Justin Wilson">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!--    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<div class="container-fluid pl-0 pr-0 h-100">
+    <div class="row no-gutters h-100">
+        <div class="col-1 categories bg-secondary text-center">
+            <div>
+                <div id="btn-add-note" class="w-100 mb-4 mt-2 bigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1024 1024"><path d="M696 480H544V328c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v152H328c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h152v152c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V544h152c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z" fill="white"/><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448s448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372s372 166.6 372 372s-166.6 372-372 372z" fill="white"/><rect x="0" y="0" width="1024" height="1024" fill="rgba(0, 0, 0, 0)" /></svg>
+                </div>
+                <div id="btn-list-note" class="w-100 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M13 14H9a1 1 0 0 0 0 2h4a1 1 0 0 0 0-2zm4-10h-1.18A3 3 0 0 0 13 2h-2a3 3 0 0 0-2.82 2H7a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-7 1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4zm8 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6h1a1 1 0 0 1 1 1zm-3-9H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z" fill="white"/><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg>
+                </div>
+                <div id="btn-recent-note" class="w-100 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 50 50"><path d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15z" fill="white"/><path d="M30.3 33.7L24 27.4V16h2v10.6l5.7 5.7z" fill="white"/><rect x="0" y="0" width="50" height="50" fill="rgba(0, 0, 0, 0)" /></svg>
+                </div>
+                <div id="btn-liked-note" class="w-100 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 50 50"><path d="M15.2 40.6c-.2 0-.4-.1-.6-.2c-.4-.3-.5-.7-.4-1.1l3.9-12l-10.2-7.5c-.4-.3-.5-.7-.4-1.1s.5-.7 1-.7h12.7L25 5.9c.1-.4.5-.7 1-.7s.8.3 1 .7L30.9 18h12.7c.4 0 .8.2 1 .6s0 .9-.4 1.1L34 27.1l3.9 12c.1.4 0 .9-.4 1.1s-.8.3-1.2 0L26 33l-10.2 7.4c-.2.1-.4.2-.6.2zM26 30.7c.2 0 .4.1.6.2l8.3 6.1l-3.2-9.8c-.1-.4 0-.9.4-1.1l8.3-6.1H30.1c-.4 0-.8-.3-1-.7L26 9.5l-3.2 9.8c-.1.4-.5.7-1 .7H11.5l8.3 6.1c.4.3.5.7.4 1.1L17.1 37l8.3-6.1c.2-.1.4-.2.6-.2z" fill="white"/><rect x="0" y="0" width="50" height="50" fill="rgba(0, 0, 0, 0)" /></svg>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 notes bg-light">
+            <div class="row no-gutters">
+                <div class="col p-3">
+                    <span class="h2">Notes</span>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col">
+                    <ul id="note-list" class="list-group"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="col editor">
+            <div class="row no-gutters h-20">
+                <div class="col">
+                    <div id="toolbar">
+<!--                        <button class="ql-bold">Bold</button>-->
+<!--                        <button class="ql-italic">Italic</button>-->
+                    </div>
+                </div>
+                <div id="col-btn-edit" class="col-1 d-none">
+                    <button id="btn-edit-done" class="btn btn-success w-100 h-100">Done</button>
+                </div>
+            </div>
+            <div class="row no-gutters h-80 flex-grow-1">
+                <div class="col">
+                    <div id="editor"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="div-add-note" class="d-none"></div>
+
+    <div class="modal fade" id="modal-header" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form>
+                            <div class="form-row">
+                                <div class="col-5">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="select-tag">
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 8 8"><path d="M0 1v2l3 3l1.5-1.5L5 4L3 2L2 1H0zm3.41 0l3 3l-1.19 1.22L6 6l2-2l-3-3H3.41zM1.5 2c.28 0 .5.22.5.5s-.22.5-.5.5s-.5-.22-.5-.5s.22-.5.5-.5z" fill="#626262"/><rect x="0" y="0" width="8" height="8" fill="rgba(0, 0, 0, 0)" /></svg>
+                                            </label>
+                                        </div>
+                                        <select class="custom-select" id="select-tag">
+                                            <option selected>Algorithmic trading</option>
+                                            <option value="1">Keycloak</option>
+                                            <option value="2">UMA</option>
+                                            <option value="3">Work</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 8 8"><path d="M0 0v3l5 5l3-3l-5-5H0zm2 1c.55 0 1 .45 1 1s-.45 1-1 1s-1-.45-1-1s.45-1 1-1z" fill="#626262"/><rect x="0" y="0" width="8" height="8" fill="rgba(0, 0, 0, 0)" /></svg>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" id="text-new-tag" placeholder="New label">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <hr />
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 8 8"><path d="M0 0v3l5 5l3-3l-5-5H0zm2 1c.55 0 1 .45 1 1s-.45 1-1 1s-1-.45-1-1s.45-1 1-1z" fill="#626262"/><rect x="0" y="0" width="8" height="8" fill="rgba(0, 0, 0, 0)" /></svg>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" id="text-header" placeholder="Header">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200"><path d="M808.969 133.929v257.06H942.94v267.899H417.981V508.763L0 787.417l417.982 278.654V915.946H1200V133.928H808.969v.001z" fill="#626262"/><rect x="0" y="0" width="1200" height="1200" fill="rgba(0, 0, 0, 0)" /></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+
+<script data-main="/js/config" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.js" integrity="sha256-lIXwkX+X/PT2Ol6jZSAP/VfxI/RROCovmhrS4v1RrJs=" crossorigin="anonymous"></script>
+
+<!--<script src="https://code.iconify.design/1/1.0.3/iconify.min.js"></script>-->
+<!--<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>-->
+<!--<script src="/js/notes.js" crossorigin="anonymous"></script>-->
+<!--<script type="module" src="/js/keycloak.js"></script>-->
+</html>
