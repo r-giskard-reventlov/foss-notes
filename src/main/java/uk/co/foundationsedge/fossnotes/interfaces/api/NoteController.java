@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.co.foundationsedge.fossnotes.application.NoteService;
 import uk.co.foundationsedge.fossnotes.interfaces.api.dto.Note;
+import uk.co.foundationsedge.fossnotes.interfaces.api.dto.NoteAndText;
 import uk.co.foundationsedge.fossnotes.interfaces.api.dto.NoteOrder;
+import uk.co.foundationsedge.fossnotes.interfaces.spacy.dto.NamedEntityItem;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -47,13 +50,13 @@ public class NoteController {
     }
 
     @PatchMapping("/notes/{id}")
-    public ResponseEntity<Void> createNote(
+    public ResponseEntity<List<NamedEntityItem>> createNote(
             @PathVariable("id") UUID id,
-            @RequestBody String content,
+            @RequestBody NoteAndText content,
             @AuthenticationPrincipal Principal principal,
             UriComponentsBuilder uriBuilder) {
-        this.noteService.updateNote(id, content, principal);
-        return ResponseEntity.noContent().build();
+        var entities = this.noteService.updateNote(id, content, principal);
+        return ResponseEntity.ok().body(entities);
     }
 
     @GetMapping("/notes/{id}")

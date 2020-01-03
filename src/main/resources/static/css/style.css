@@ -3,13 +3,76 @@ html,body {
 }
 
 .categories {
+  background: #3f6844;
+}
 
+.collapsed {
+  display: none;
 }
 
 .notes {
   overflow-y: scroll;
+  background: #5daa68;
 }
 
+.editor {
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.note-resizebar {
+  display: none;
+}
+
+.note-editor, .note-editing-area {
+  height: 100%;
+}
+
+.selected-note {
+  background: #3f6844 !important;
+  color: white;
+}
+
+.note:hover .highlight-hidden {
+  display: inline;
+}
+
+.highlight-hidden {
+  display: none;
+  z-index: 10;
+}
+
+.note:hover .full-display {
+  display: inline;
+}
+
+.full-display {
+  display: none;
+  z-index: 10;
+  width: 100%;
+}
+
+.editor-main {
+  flex-grow: 1 !important;
+}
+
+#hint-bar {
+  background: #faf1cf;
+  border-bottom: 1px solid grey;
+  color: grey;
+}
+
+#note-list li {
+  cursor: pointer;
+  background: #faf1cf;
+}
+
+
+
+.tag svg {
+  cursor: pointer;
+}
 
 
 #btn-add-note svg {
@@ -34,12 +97,17 @@ html,body {
   padding: 0.25rem !important;
 }
 
-#note-list li {
-  cursor: pointer;
+.editor-main .card {
+  border: 0px;
 }
 
-.selected-note {
-  background: red;
+.note-editor.note-frame {
+  border: 0px;
+}
+
+.selected-note:hover svg path,
+.selected-note:hover{
+  fill:white;
 }
 
 input {
@@ -49,13 +117,6 @@ input {
 
 button {
   border-radius: 0rem !important;
-}
-
-hr {
-  margin-top: 0.4rem;
-  margin-bottom: 0.6rem;
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .no-border {

@@ -9,8 +9,12 @@ define(["jquery"], function($) {
                 data: body
             }).done(doneFn).fail(failFn);
         },
-        del: function() {
-
+        del: function(resource, doneFn, failFn) {
+            $.ajax({
+                type: "DELETE",
+                contentType: "application/json",
+                url: resource
+            }).done(doneFn).fail(failFn);
         },
         readAll: function(doneFn, failFn) {
             $.ajax({
@@ -29,7 +33,7 @@ define(["jquery"], function($) {
         updateContent: function(resource, content, doneFn, failFn) {
             $.ajax({
                 type: "PATCH",
-                contentType: "application/xml",
+                contentType: "application/json",
                 url: resource,
                 data: content
             }).done(doneFn).fail(failFn);

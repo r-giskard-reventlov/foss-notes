@@ -4,16 +4,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.co.foundationsedge.fossnotes.domain.notes.NoteNotFoundException;
 import uk.co.foundationsedge.fossnotes.domain.notes.NoteUpdateException;
 import uk.co.foundationsedge.fossnotes.interfaces.api.dto.Note;
 import uk.co.foundationsedge.fossnotes.domain.notes.NoteRepository;
+import uk.co.foundationsedge.fossnotes.interfaces.api.dto.NoteAndText;
+import uk.co.foundationsedge.fossnotes.interfaces.spacy.NamedEntityService;
+import uk.co.foundationsedge.fossnotes.interfaces.spacy.dto.NamedEntityItem;
 
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -23,14 +29,18 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class NoteService {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(NoteService.class);
+
     private final Supplier<? extends RuntimeException> lookupFailed = () -> new NoteNotFoundException("failed to find note");
 
     private final NoteRepository noteRepository;
     private final ObjectMapper objectMapper;
+    private final NamedEntityService namedEntityService;
 
-    public NoteService(NoteRepository noteRepository, ObjectMapper objectMapper) {
+    public NoteService(NoteRepository noteRepository, ObjectMapper objectMapper, NamedEntityService namedEntityService) {
         this.noteRepository = noteRepository;
         this.objectMapper = objectMapper;
+        this.namedEntityService = namedEntityService;
     }
 
     public UUID store(Note note, Principal principal) {
@@ -81,11 +91,20 @@ public class NoteService {
     }
 
     @Transactional
-    public void updateNote(UUID id, String content, Principal principal) {
+    public List<NamedEntityItem> updateNote(UUID id, NoteAndText content, Principal principal) {
         var note = noteRepository.findById(id).orElseThrow(lookupFailed);
-        note.setNote(content);
+        note.setNote(content.getHtml());
         noteRepository.save(note);
+
+        var entities = this.namedEntityService.namedEntitiesFor(content.getText());
+
+        return entities.parallelStream()
+                //.filter(e -> Set.of("DATE", "TIME").contains(e.getType()))
+                .collect(toList());
     }
+
+//    private List<> potentialDates(List<NamedEntityItem> collect) {
+//    }
 
     private boolean existingHasOps(Note note) {
         try {

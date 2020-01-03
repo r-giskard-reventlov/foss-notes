@@ -15,7 +15,7 @@
 <body>
 <div class="container-fluid pl-0 pr-0 h-100">
     <div class="row no-gutters h-100">
-        <div class="col-1 categories bg-secondary text-center">
+        <div class="col-1 categories text-center">
             <div>
                 <div id="btn-add-note" class="w-100 mb-4 mt-2 bigger">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1024 1024"><path d="M696 480H544V328c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v152H328c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h152v152c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V544h152c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z" fill="white"/><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448s448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372s372 166.6 372 372s-166.6 372-372 372z" fill="white"/><rect x="0" y="0" width="1024" height="1024" fill="rgba(0, 0, 0, 0)" /></svg>
@@ -31,10 +31,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-3 notes bg-light">
+        <div class="col-4 notes">
             <div class="row no-gutters">
                 <div class="col p-3">
-                    <span class="h2">Notes</span>
+                    <span class="h2 text-white">Notes</span>
                 </div>
             </div>
             <div class="row no-gutters">
@@ -43,23 +43,24 @@
                 </div>
             </div>
         </div>
-        <div class="col editor">
-            <div class="row no-gutters h-20">
+        <div class="col-7 editor">
+            <div id="toolbar-div" class="row no-gutters">
                 <div class="col">
-                    <div id="toolbar">
-<!--                        <button class="ql-bold">Bold</button>-->
-<!--                        <button class="ql-italic">Italic</button>-->
-                    </div>
+                    <div id="toolbar"></div>
+                    <div id="hint-bar" class="p-1 small d-none"></div>
                 </div>
                 <div id="col-btn-edit" class="col-1 d-none">
                     <button id="btn-edit-done" class="btn btn-success w-100 h-100">Done</button>
                 </div>
             </div>
-            <div class="row no-gutters h-80 flex-grow-1">
+            <div class="editor-main row no-gutters">
                 <div class="col">
                     <div id="editor"></div>
                 </div>
             </div>
+<!--            <div class="row no-gutters">-->
+<!--                <div class="col p-1 interest"></div>-->
+<!--            </div>-->
         </div>
     </div>
 
